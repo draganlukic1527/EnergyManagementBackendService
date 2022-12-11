@@ -1,0 +1,37 @@
+const sql = require("./db.js");
+const util = require("util");
+
+const Login = function (login) {
+	this.EmailAddress = login.EmailAddress;
+	this.PasswordHash = login.PasswordHash;
+};
+
+Login.login = (login, result) => {
+	console.log("CHECK:", login);
+	sql.query(
+		`SELECT * FROM User WHERE EmailAddress = "${login.EmailAddress}" AND PasswordHash =  "${login.PasswordHash}"`,
+		(err, res) => {
+			if (err) {
+				console.log("error", err);
+				result(err, null);
+				return;
+			}
+
+			if (res.length) {
+				for (const user of res) {
+					const energyData = user.EnergyData;
+					const updatedEnergyData = energyData.toString("utf-8");
+					user.EnergyData = JSON.parse(updatedEnergyData);
+				}
+				console.log("found User: ", res[0]);
+				result(null, res[0]);
+				return;
+			}
+
+			// not found Tutorial with the id
+			result({ kind: "not_found" }, null);
+		}
+	);
+};
+
+module.exports = Login;
