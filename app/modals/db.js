@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const dbConfig = require("../config/db.config.js");
 
 /* Create Connection to Database */
@@ -8,7 +8,6 @@ const connection = mysql.createConnection({
 	password: dbConfig.PASSWORD,
 	database: dbConfig.DB,
 	port: dbConfig.DB_PORT,
-	dialect: "mysql",
 	pool: {
 		max: 5,
 		min: 0,

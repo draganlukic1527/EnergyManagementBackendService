@@ -20,7 +20,7 @@ Login.login = (login, result) => {
 			if (res.length) {
 				for (const user of res) {
 					const energyData = user.EnergyData;
-					const updatedEnergyData = energyData.toString("utf-8");
+					const updatedEnergyData = JSON.stringify(energyData);
 					user.EnergyData = JSON.parse(updatedEnergyData);
 				}
 				console.log("found User: ", res[0]);

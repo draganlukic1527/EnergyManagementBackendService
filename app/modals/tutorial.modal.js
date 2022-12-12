@@ -43,12 +43,12 @@ Tutorial.findById = (UserID, result) => {
 		}
 
 		if (res.length) {
+			console.log("found User: ", res[0]);
 			for (const user of res) {
 				const energyData = user.EnergyData;
-				const updatedEnergyData = energyData.toString("utf-8");
+				const updatedEnergyData = JSON.stringify(energyData);
 				user.EnergyData = JSON.parse(updatedEnergyData);
 			}
-			console.log("found User: ", res[0]);
 			result(null, res[0]);
 			return;
 		}
@@ -71,14 +71,12 @@ Tutorial.findAll = (title, result) => {
 			result(null, err);
 			return;
 		}
-
 		for (const user of res) {
 			const energyData = user.EnergyData;
-			const updatedEnergyData = energyData.toString("utf-8");
+			const updatedEnergyData = JSON.stringify(energyData);
 			user.EnergyData = JSON.parse(updatedEnergyData);
 		}
-
-		// console.log("tutorials: ", res);
+		console.log("tutorials: ", res);
 		result(null, res);
 	});
 };
