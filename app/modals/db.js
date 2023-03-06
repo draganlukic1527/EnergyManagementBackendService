@@ -18,9 +18,10 @@ const connection = mysql.createConnection({
 
 connection.connect((error) => {
 	if (error) {
-		throw error;
+		console.error("Database connection failed: " + error.stack);
+		return;
 	}
-	console.log("Successfully connected to database");
+	console.log("Successfully connected to database: ", dbConfig.DB_HOST);
 });
 
 module.exports = connection;

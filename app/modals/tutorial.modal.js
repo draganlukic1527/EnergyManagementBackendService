@@ -21,7 +21,7 @@ const Tutorial = function (tutorial) {
 
 Tutorial.create = (newTutorial, result) => {
 	newTutorial.EnergyData = JSON.stringify(newTutorial.EnergyData);
-	sql.query("INSERT INTO User SET ?", newTutorial, (err, res) => {
+	sql.query("INSERT INTO USER SET ?", newTutorial, (err, res) => {
 		console;
 		if (err) {
 			console.log("error: ", err);
@@ -35,7 +35,7 @@ Tutorial.create = (newTutorial, result) => {
 };
 
 Tutorial.findById = (UserID, result) => {
-	sql.query(`SELECT * FROM User WHERE UserID = "${UserID}"`, (err, res) => {
+	sql.query(`SELECT * FROM USER WHERE UserID = "${UserID}"`, (err, res) => {
 		if (err) {
 			console.log("error", err);
 			result(err, null);
@@ -59,7 +59,7 @@ Tutorial.findById = (UserID, result) => {
 };
 
 Tutorial.findAll = (title, result) => {
-	let query = "SELECT * FROM User";
+	let query = "SELECT * FROM USER";
 
 	if (title) {
 		query += ` WHERE UserID LIKE '%${UserID}%'`;
@@ -83,7 +83,7 @@ Tutorial.findAll = (title, result) => {
 
 Tutorial.updateByUserID = (UserID, tutorial, result) => {
 	let query =
-		"UPDATE User SET EmailAddress = ?, PasswordHash = ?, UserType = ?, UserRole = ?, EnergyProvider = ?, FirstName = ?, MiddleName = ?, LastName = ?, RegisteredDate = ?, LastLogin = ?, EnergyData = ?, Zip = ?, City = ?, State = ? WHERE UserID = ?";
+		"UPDATE USER SET EmailAddress = ?, PasswordHash = ?, UserType = ?, UserRole = ?, EnergyProvider = ?, FirstName = ?, MiddleName = ?, LastName = ?, RegisteredDate = ?, LastLogin = ?, EnergyData = ?, Zip = ?, City = ?, State = ? WHERE UserID = ?";
 	sql.query(
 		query,
 		[
@@ -123,7 +123,7 @@ Tutorial.updateByUserID = (UserID, tutorial, result) => {
 };
 
 Tutorial.remove = (id, result) => {
-	sql.query("DELETE FROM User WHERE UserID = ?", id, (err, res) => {
+	sql.query("DELETE FROM USER WHERE UserID = ?", id, (err, res) => {
 		if (err) {
 			console.log("error: ", err);
 			result(null, err);
@@ -142,7 +142,7 @@ Tutorial.remove = (id, result) => {
 };
 
 Tutorial.removeAll = (result) => {
-	sql.query("DELETE FROM User", (err, res) => {
+	sql.query("DELETE FROM USER", (err, res) => {
 		if (err) {
 			console.log("error: ", err);
 			result(null, err);

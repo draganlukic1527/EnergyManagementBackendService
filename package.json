@@ -4,7 +4,10 @@
 	"description": "",
 	"main": "server.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node server.js",
+		"aws": "env-cmd -f aws.env node server.js",
+		"local": "env-cmd -f .env node server.js"
 	},
 	"keywords": [
 		"nodejs",
@@ -16,6 +19,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"dotenv": "^10.0.0",
+		"env-cmd": "^10.1.0",
 		"mysql2": "^2.3.3",
 		"node-fetch": "^3.2.10"
 	},

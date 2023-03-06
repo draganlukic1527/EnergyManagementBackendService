@@ -1,5 +1,9 @@
 const dotenv = require("dotenv");
 dotenv.config();
+const path = require("path");
+dotenv.config({
+	path: path.resolve(__dirname, `${process.env.NODE_ENV}.env`),
+});
 const express = require("express");
 const cors = require("cors");
 
@@ -39,7 +43,14 @@ require("./app/routes/tutorial.routes.js")(app);
 require("./app/routes/login.routes.js")(app);
 
 // set port, listen for requests
-const PORT = process.env.NODE_DOCKER_PORT || 8080;
-app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}.`);
+console.log("CHECK:", process.env);
+console.log("path", path.resolve(__dirname, `${process.env.NODE_ENV}.env`));
+const NODE_ENV = process.env.NODE_ENV || "local";
+const HOST = process.env.HOST || "localhost";
+const PORT = process.env.PORT || process.env.NODE_DOCKER_PORT || 8080;
+
+app.listen(PORT, HOST, () => {
+	console.log(
+		`Server is running on port ${PORT}. and host ${HOST} and env ${NODE_ENV}`
+	);
 });
