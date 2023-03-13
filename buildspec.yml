@@ -1,0 +1,42 @@
+version: 0.1
+
+env:
+  parameter-store:
+    PASSWORD: password
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16
+    commands:
+      - echo "installing packages..."
+      - echo "Packages installed successfully."
+      - npm install -g typescript
+      - npm install -g aws-cdk
+      - npm install -g dotenv
+      - npm install -g env-cmd
+      - npm install -g mysql2
+      - npm install -g node-fetch
+      - npm install express cross-env config
+      - npm install
+      - npm run build
+  pre_build:
+    commands:
+      - echo "Testing..."
+      - echo "Tests passed successfully."
+  build:
+    commands:
+      - echo "Starting compiling packages..."
+      - echo "Build passed successfully."
+      - cdk --version
+      - cdk ls
+      - cdk synth
+  post_build:
+    commands:
+      - echo "Performing post-build packing and operations..."
+      - echo "Post build successful"
+
+artifacts:
+  files:
+    - "**/*"
+  name: deploy-nodejs-build-artifacts

@@ -9,7 +9,7 @@ const Login = function (login) {
 Login.login = (login, result) => {
 	console.log("CHECK:", login);
 	sql.query(
-		`SELECT * FROM User WHERE EmailAddress = "${login.EmailAddress}" AND PasswordHash =  "${login.PasswordHash}"`,
+		`SELECT * FROM USER WHERE EmailAddress = "${login.EmailAddress}" AND PasswordHash =  "${login.PasswordHash}"`,
 		(err, res) => {
 			if (err) {
 				console.log("error", err);
