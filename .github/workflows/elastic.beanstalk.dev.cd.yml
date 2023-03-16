@@ -55,7 +55,7 @@ jobs:
           application_name: energy-management-api
           environment_name: energy-management-api-env
           region: us-east-2
-          version_label: "app-version-${{ steps.format-time.outputs.replaced }}" #Using timestamp for the versions
+          version_label: "app-version-2023-03-15T07-41-21-134Z" #Using timestamp for the versions
           deployment_package: deploy.zip
 
       - name: Deployed successfully!
