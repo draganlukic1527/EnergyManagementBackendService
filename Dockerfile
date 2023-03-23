@@ -1,6 +1,6 @@
 FROM node:14
 
-WORKDIR /energyManagementBackendServiceGithub
+WORKDIR /EnergyManagementBackendService
 COPY package.json .
 RUN npm install
 COPY . .
