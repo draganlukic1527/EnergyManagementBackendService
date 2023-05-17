@@ -22,12 +22,11 @@ exports.findUser = (req, res) => {
 		PasswordHash: req.body.PasswordHash,
 	});
 
-	// Save Tutorial In Database
+	// Save user In Database
 	Login.login(login, (err, data) => {
 		if (err)
 			res.status(500).send({
-				message:
-					err.message || "Some error occurred while creating the Tutorial.",
+				message: err.message || "Some error occurred while creating the user.",
 			});
 		else res.send(data);
 	});

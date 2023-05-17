@@ -1,27 +1,27 @@
 const sql = require("./db.js");
 const util = require("util");
 
-const Tutorial = function (tutorial) {
-	this.EmailAddress = tutorial.EmailAddress;
-	this.PasswordHash = tutorial.PasswordHash;
-	this.UserType = tutorial.UserType;
-	this.UserRole = tutorial.UserRole;
-	this.EnergyProvider = tutorial.EnergyProvider;
-	this.FirstName = tutorial.FirstName;
-	this.MiddleName = tutorial.MiddleName;
-	this.LastName = tutorial.LastName;
-	this.RegisteredDate = tutorial.RegisteredDate;
-	this.LastLogin = tutorial.LastLogin;
-	this.EnergyData = tutorial.EnergyData;
-	this.StreetAddress = tutorial.StreetAddress;
-	this.Zip = tutorial.Zip;
-	this.City = tutorial.City;
-	this.State = tutorial.State;
+const User = function (user) {
+	this.EmailAddress = user.EmailAddress;
+	this.PasswordHash = user.PasswordHash;
+	this.UserType = user.UserType;
+	this.UserRole = user.UserRole;
+	this.EnergyProvider = user.EnergyProvider;
+	this.FirstName = user.FirstName;
+	this.MiddleName = user.MiddleName;
+	this.LastName = user.LastName;
+	this.RegisteredDate = user.RegisteredDate;
+	this.LastLogin = user.LastLogin;
+	this.EnergyData = user.EnergyData;
+	this.StreetAddress = user.StreetAddress;
+	this.Zip = user.Zip;
+	this.City = user.City;
+	this.State = user.State;
 };
 
-Tutorial.create = (newTutorial, result) => {
-	newTutorial.EnergyData = JSON.stringify(newTutorial.EnergyData);
-	sql.query("INSERT INTO USER SET ?", newTutorial, (err, res) => {
+User.create = (newUser, result) => {
+	newUser.EnergyData = JSON.stringify(newUser.EnergyData);
+	sql.query("INSERT INTO USER SET ?", newUser, (err, res) => {
 		console;
 		if (err) {
 			console.log("error: ", err);
@@ -29,12 +29,12 @@ Tutorial.create = (newTutorial, result) => {
 			return;
 		}
 
-		console.log("created tutorial: ", { newTutorial });
-		result(null, { newTutorial });
+		console.log("created user: ", { newUser });
+		result(null, { newUser });
 	});
 };
 
-Tutorial.findById = (UserID, result) => {
+User.findById = (UserID, result) => {
 	sql.query(`SELECT * FROM USER WHERE UserID = "${UserID}"`, (err, res) => {
 		if (err) {
 			console.log("error", err);
@@ -53,12 +53,12 @@ Tutorial.findById = (UserID, result) => {
 			return;
 		}
 
-		// not found Tutorial with the id
+		// not found User with the id
 		result({ kind: "not_found" }, null);
 	});
 };
 
-Tutorial.findAll = (title, result) => {
+User.findAll = (title, result) => {
 	let query = "SELECT * FROM USER";
 
 	if (title) {
@@ -76,31 +76,31 @@ Tutorial.findAll = (title, result) => {
 			const updatedEnergyData = JSON.stringify(energyData);
 			user.EnergyData = JSON.parse(updatedEnergyData);
 		}
-		console.log("tutorials: ", res);
+		console.log("Users: ", res);
 		result(null, res);
 	});
 };
 
-Tutorial.updateByUserID = (UserID, tutorial, result) => {
+User.updateByUserID = (UserID, user, result) => {
 	let query =
 		"UPDATE USER SET EmailAddress = ?, PasswordHash = ?, UserType = ?, UserRole = ?, EnergyProvider = ?, FirstName = ?, MiddleName = ?, LastName = ?, RegisteredDate = ?, LastLogin = ?, EnergyData = ?, Zip = ?, City = ?, State = ? WHERE UserID = ?";
 	sql.query(
 		query,
 		[
-			tutorial.EmailAddress,
-			tutorial.PasswordHash,
-			tutorial.UserType,
-			tutorial.UserRole,
-			tutorial.EnergyProvider,
-			tutorial.FirstName,
-			tutorial.MiddleName,
-			tutorial.LastName,
-			tutorial.RegisteredDate,
-			tutorial.LastLogin,
-			tutorial.EnergyData,
-			tutorial.Zip,
-			tutorial.City,
-			tutorial.State,
+			user.EmailAddress,
+			user.PasswordHash,
+			user.UserType,
+			user.UserRole,
+			user.EnergyProvider,
+			user.FirstName,
+			user.MiddleName,
+			user.LastName,
+			user.RegisteredDate,
+			user.LastLogin,
+			user.EnergyData,
+			user.Zip,
+			user.City,
+			user.State,
 			UserID,
 		],
 		(err, res) => {
@@ -111,18 +111,18 @@ Tutorial.updateByUserID = (UserID, tutorial, result) => {
 			}
 
 			if (res.affectedRows == 0) {
-				// not found Tutorial with the id
+				// not found user with the id
 				result({ kind: "not_found" }, null);
 				return;
 			}
 
-			console.log("updated tutorial: ", { UserID: UserID, ...tutorial });
-			result(null, { UserID: UserID, ...tutorial });
+			console.log("updated user: ", { UserID: UserID, ...user });
+			result(null, { UserID: UserID, ...user });
 		}
 	);
 };
 
-Tutorial.remove = (id, result) => {
+User.remove = (id, result) => {
 	sql.query("DELETE FROM USER WHERE UserID = ?", id, (err, res) => {
 		if (err) {
 			console.log("error: ", err);
@@ -131,17 +131,17 @@ Tutorial.remove = (id, result) => {
 		}
 
 		if (res.affectedRows == 0) {
-			// not found Tutorial with the id
+			// not found user with the id
 			result({ kind: "not_found" }, null);
 			return;
 		}
 
-		console.log("deleted tutorial with id: ", id);
+		console.log("deleted user with id: ", id);
 		result(null, res);
 	});
 };
 
-Tutorial.removeAll = (result) => {
+User.removeAll = (result) => {
 	sql.query("DELETE FROM USER", (err, res) => {
 		if (err) {
 			console.log("error: ", err);
@@ -149,9 +149,9 @@ Tutorial.removeAll = (result) => {
 			return;
 		}
 
-		console.log(`deleted ${res.affectedRows} tutorials`);
+		console.log(`deleted ${res.affectedRows} users`);
 		result(null, res);
 	});
 };
 
-module.exports = Tutorial;
+module.exports = User;

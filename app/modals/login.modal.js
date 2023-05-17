@@ -28,7 +28,7 @@ Login.login = (login, result) => {
 				return;
 			}
 
-			// not found Tutorial with the id
+			// not found user with the id
 			result({ kind: "not_found" }, null);
 		}
 	);

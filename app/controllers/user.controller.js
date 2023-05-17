@@ -1,4 +1,4 @@
-const Tutorial = require("../modals/tutorial.modal");
+const User = require("../modals/user.modal");
 
 exports.create = (req, res) => {
 	// Validate Request
@@ -9,7 +9,7 @@ exports.create = (req, res) => {
 	}
 
 	// Create a User
-	const tutorial = new Tutorial({
+	const user = new User({
 		EmailAddress: req.body.EmailAddress,
 		PasswordHash: req.body.PasswordHash,
 		UserType: req.body.UserType,
@@ -27,12 +27,11 @@ exports.create = (req, res) => {
 		State: req.body.State,
 	});
 
-	// Save Tutorial In Database
-	Tutorial.create(tutorial, (err, data) => {
+	// Save User In Database
+	User.create(user, (err, data) => {
 		if (err)
 			res.status(500).send({
-				message:
-					err.message || "Some error occurred while creating the Tutorial.",
+				message: err.message || "Some error occurred while creating the User.",
 			});
 		else res.send(data);
 	});
@@ -41,11 +40,10 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
 	const EmailAddress = req.query.EmailAddress;
 
-	Tutorial.findAll(EmailAddress, (err, data) => {
+	User.findAll(EmailAddress, (err, data) => {
 		if (err)
 			res.status(500).send({
-				message:
-					err.message || "Some error occurred while retrieving tutorials.",
+				message: err.message || "Some error occurred while retrieving users.",
 			});
 		else res.send(data);
 	});
@@ -53,15 +51,15 @@ exports.findAll = (req, res) => {
 
 exports.findById = (req, res) => {
 	console.log("REQ", req.params);
-	Tutorial.findById(req.params.UserID, (err, data) => {
+	User.findById(req.params.UserID, (err, data) => {
 		if (err) {
 			if (err.kind === "not_found") {
 				res.status(404).send({
-					message: `Not found Tutorial with id ${req.params.UserID}.`,
+					message: `Not found User with id ${req.params.UserID}.`,
 				});
 			} else {
 				res.status(500).send({
-					message: "Error retrieving Tutorial with id " + req.params.UserID,
+					message: "Error retrieving User with id " + req.params.UserID,
 				});
 			}
 		} else res.send(data);
@@ -78,48 +76,43 @@ exports.updateByUserID = (req, res) => {
 
 	console.log(req.body);
 
-	Tutorial.updateByUserID(
-		req.params.UserID,
-		new Tutorial(req.body),
-		(err, data) => {
-			if (err) {
-				if (err.kind === "not_found") {
-					res.status(404).send({
-						message: `Not found User with id ${req.params.UserID}.`,
-					});
-				} else {
-					res.status(500).send({
-						message: "Error updating User with id " + req.params.UserID,
-					});
-				}
-			} else res.send(data);
-		}
-	);
-};
-
-exports.delete = (req, res) => {
-	Tutorial.remove(req.params.UserID, (err, data) => {
+	User.updateByUserID(req.params.UserID, new User(req.body), (err, data) => {
 		if (err) {
 			if (err.kind === "not_found") {
 				res.status(404).send({
-					message: `Not found Tutorial with id ${req.params.UserID}.`,
+					message: `Not found User with id ${req.params.UserID}.`,
 				});
 			} else {
 				res.status(500).send({
-					message: "Could not delete Tutorial with id " + req.params.UserID,
+					message: "Error updating User with id " + req.params.UserID,
 				});
 			}
-		} else res.send({ message: `Tutorial was deleted successfully!` });
+		} else res.send(data);
+	});
+};
+
+exports.delete = (req, res) => {
+	User.remove(req.params.UserID, (err, data) => {
+		if (err) {
+			if (err.kind === "not_found") {
+				res.status(404).send({
+					message: `Not found User with id ${req.params.UserID}.`,
+				});
+			} else {
+				res.status(500).send({
+					message: "Could not delete User with id " + req.params.UserID,
+				});
+			}
+		} else res.send({ message: `User was deleted successfully!` });
 	});
 };
 
 exports.deleteAll = (req, res) => {
-	Tutorial.removeAll((err, data) => {
+	User.removeAll((err, data) => {
 		if (err)
 			res.status(500).send({
-				message:
-					err.message || "Some error occurred while removing all tutorials.",
+				message: err.message || "Some error occurred while removing all Users.",
 			});
-		else res.send({ message: `All Tutorials were deleted successfully!` });
+		else res.send({ message: `All Users were deleted successfully!` });
 	});
 };
