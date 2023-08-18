@@ -21,7 +21,7 @@ connection.connect((error) => {
 		console.error("Database connection failed: " + error.stack);
 		return;
 	}
-	console.log("Successfully connected to database: ", dbConfig.DB_HOST);
+	console.log("Successfully connected to database: ", dbConfig.HOST);
 });
 
 module.exports = connection;

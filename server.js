@@ -24,27 +24,14 @@ app.use(express.urlencoded({ extended: true }));
 
 // simple route
 app.get("/", (req, res) => {
-	res.json({ message: "Welcome to bezkoder application." });
+	res.json({ message: "Welcome to solnook application." });
 });
-
-// app.use("/login", (req, res) => {
-// 	res.header("Access-Control-Allow-Origin", "*");
-// 	res.header(
-// 		"Access-Control-Allow-Headers",
-// 		"Origin, X-Requested-With, Content-Type, Accept"
-// 	);
-// 	console.log("req:", req.body);
-// 	res.send({
-// 		token: "test123",
-// 	});
-// });
 
 require("./app/routes/user.routes.js")(app);
 require("./app/routes/login.routes.js")(app);
+require("./app/routes/utilityAPI.routes.js")(app);
 
 // set port, listen for requests
-console.log("CHECK:", process.env);
-console.log("path", path.resolve(__dirname, `${process.env.NODE_ENV}.env`));
 const NODE_ENV = process.env.NODE_ENV || "local";
 const HOST = process.env.HOST || "localhost";
 const PORT = process.env.PORT || process.env.NODE_DOCKER_PORT || 8080;
