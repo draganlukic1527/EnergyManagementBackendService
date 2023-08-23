@@ -1,4 +1,5 @@
 const User = require("../modals/user.modal");
+const utility = require("../controllers/utilityAPI.controller.js");
 
 exports.create = (req, res) => {
 	// Validate Request
@@ -8,33 +9,43 @@ exports.create = (req, res) => {
 		});
 	}
 
-	// Create a User
-	const user = new User({
-		EmailAddress: req.body.EmailAddress,
-		PasswordHash: req.body.PasswordHash,
-		UserType: req.body.UserType,
-		UserRole: req.body.UserRole,
-		EnergyProvider: req.body.EnergyProvider,
-		FirstName: req.body.FirstName,
-		MiddleName: req.body.MiddleName,
-		LastName: req.body.LastName,
-		RegisteredDate: req.body.RegisteredDate,
-		LastLogin: req.body.LastLogin,
-		EnergyData: req.body.EnergyData,
-		StreetAddress: req.body.StreetAddress,
-		Zip: req.body.Zip,
-		City: req.body.City,
-		State: req.body.State,
-	});
-
-	// Save User In Database
-	User.create(user, (err, data) => {
-		if (err)
-			res.status(500).send({
-				message: err.message || "Some error occurred while creating the User.",
+	// fetch utilityAPI Data
+	utility
+		.getEnergyBill()
+		.then((energyBill) => {
+			// Create a User
+			const user = new User({
+				EmailAddress: req.body.EmailAddress,
+				PasswordHash: req.body.PasswordHash,
+				UserType: req.body.UserType,
+				UserRole: req.body.UserRole,
+				EnergyProvider: req.body.EnergyProvider,
+				FirstName: req.body.FirstName,
+				MiddleName: req.body.MiddleName,
+				LastName: req.body.LastName,
+				RegisteredDate: req.body.RegisteredDate,
+				LastLogin: req.body.LastLogin,
+				EnergyData: energyBill,
+				StreetAddress: req.body.StreetAddress,
+				Zip: req.body.Zip,
+				City: req.body.City,
+				State: req.body.State,
 			});
-		else res.send(data);
-	});
+
+			// Save User In Database
+			User.create(user, (err, data) => {
+				if (err)
+					res.status(500).send({
+						message:
+							err.message || "Some error occurred while creating the User.",
+					});
+				else res.send(data);
+			});
+		})
+		.catch((err) => {
+			// handle errors here
+			console.log("Error: ", err);
+		});
 };
 
 exports.findAll = (req, res) => {

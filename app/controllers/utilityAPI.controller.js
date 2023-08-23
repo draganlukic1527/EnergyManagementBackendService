@@ -202,9 +202,20 @@ async function getUserEnergyBill(meterId) {
 	return await getUserEnergyBill.then(meterId);
 }
 
+exports.getEnergyBill = async function getForms() {
+	const uid = await getUID();
+	const referal = await getReferralCode(uid);
+	const meterId = await getUserMeterId(referal);
+	const userMeter = await activateUserMeter(meterId);
+	const meterStatus = await getUserMeterStatus(meterId.toString());
+	const energyBill = await getUserEnergyBill(meterId.toString());
+
+	return energyBill;
+};
+
 exports.createForms = async (req, res) => {
 	// Validate Request
-	if (!req.body) {
+	if (!req?.body) {
 		res.status(400).send({
 			message: "Content Can't Be Empty!",
 		});
@@ -234,9 +245,7 @@ exports.createForms = async (req, res) => {
 		referalCode: referal,
 		meterId: meterId,
 		userMeter: userMeter,
-		meterStatus: userMeter,
 		meterStatus: meterStatus,
-		meterStatusTwo: meterStatus2,
 		energyBill: energyBill,
 	});
 	res.send(addr);

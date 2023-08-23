@@ -7,8 +7,6 @@ exports.findUser = (req, res) => {
 		"Origin, X-Requested-With, Content-Type, Accept"
 	);
 
-	console.log("CONTROLLER:", req.params);
-	console.log("REQ:", req.body);
 	// Validate Requappest
 	if (!req.body) {
 		res.status(400).send({
