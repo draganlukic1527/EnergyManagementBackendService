@@ -1,11 +1,27 @@
 const User = require("../modals/user.modal");
 const utility = require("../controllers/utilityAPI.controller.js");
+const userDataValidate = require("../validation/user.validation.js");
 
 exports.create = (req, res) => {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept"
+	);
+
 	// Validate Request
 	if (!req.body) {
 		res.status(400).send({
 			message: "Content Can't Be Empty!",
+		});
+	}
+
+	// Validate User Data
+	try {
+		userDataValidate.userDataValidate(req, res);
+	} catch (e) {
+		return res.status(400).send({
+			message: e.message,
 		});
 	}
 
@@ -126,4 +142,35 @@ exports.deleteAll = (req, res) => {
 			});
 		else res.send({ message: `All Users were deleted successfully!` });
 	});
+};
+
+exports.linkUtilityAccount = (req, res) => {
+	// Validate Request
+	if (!req.body) {
+		res.status(400).send({
+			message: "Content can not be empty!",
+		});
+	}
+
+	console.log(req.body);
+
+	User.linkUtilityAccount(
+		req.params.UserID,
+		new User(req.body),
+		(err, data) => {
+			if (err) {
+				if (err.kind === "not_found") {
+					res.status(404).send({
+						message: `Not found User with id ${req.params.UserID}.`,
+					});
+				} else {
+					res.status(500).send({
+						message:
+							"ome error occured while linking utility to account" +
+							req.params.UserID,
+					});
+				}
+			} else res.send(data);
+		}
+	);
 };

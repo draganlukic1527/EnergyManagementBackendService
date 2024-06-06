@@ -154,4 +154,45 @@ User.removeAll = (result) => {
 	});
 };
 
+User.linkUtilityAccount = (result) => {
+	let query =
+		"UPDATE USER SET EmailAddress = ?, PasswordHash = ?, UserType = ?, UserRole = ?, EnergyProvider = ?, FirstName = ?, MiddleName = ?, LastName = ?, RegisteredDate = ?, LastLogin = ?, EnergyData = ?, Zip = ?, City = ?, State = ? WHERE UserID = ?";
+	sql.query(
+		query,
+		[
+			user.EmailAddress,
+			user.PasswordHash,
+			user.UserType,
+			user.UserRole,
+			user.EnergyProvider,
+			user.FirstName,
+			user.MiddleName,
+			user.LastName,
+			user.RegisteredDate,
+			user.LastLogin,
+			user.EnergyData,
+			user.Zip,
+			user.City,
+			user.State,
+			UserID,
+		],
+		(err, res) => {
+			if (err) {
+				console.log("error: ", err);
+				result(null, err);
+				return;
+			}
+
+			if (res.affectedRows == 0) {
+				// not found user with the id
+				result({ kind: "not_found" }, null);
+				return;
+			}
+
+			console.log("updated user: ", { UserID: UserID, ...user });
+			result(null, { UserID: UserID, ...user });
+		}
+	);
+};
+
 module.exports = User;

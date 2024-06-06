@@ -21,5 +21,8 @@ module.exports = (app) => {
 	// Delete User
 	router.delete("/", user.deleteAll);
 
+	// Link Utility Account to User
+	router.post("/utilityAccount/:UserID", user.linkUtilityAccount);
+
 	app.use("/user", router);
 };
